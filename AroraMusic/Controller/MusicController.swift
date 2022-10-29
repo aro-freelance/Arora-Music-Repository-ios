@@ -16,6 +16,8 @@ class MusicController: UIViewController, ItemClicked {
         stop()
         
         
+        
+        
     }
     
     @IBOutlet weak var slider: UISlider!
@@ -80,33 +82,56 @@ class MusicController: UIViewController, ItemClicked {
     
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
-        //TODO: implement
+        next()
     }
     
     
     
     @IBAction func playButtonPressed(_ sender: UIButton) {
-        //TODO: implement
+        play(currentPosition)
     }
     
     
     @IBAction func nextButtonPressed(_ sender: UIButton) {
-        //TODO: implement
+        previous()
     }
     
     
     @IBAction func randomButtonPressed(_ sender: UIButton) {
-        //TODO: implement
+        shufflePlay()
     }
     
     
     
     
+    func next(){
+        
+        //TODO: implement
+        
+    }
+    
+    func previous(){
+        
+        //TODO: implement
+        
+    }
+    
+    func stop(){
+        //TODO: implement
+    }
+    
+    func pause(){
+        //TODO: implement
+    }
+    
+    func shufflePlay(){
+        //TODO: implement
+    }
     
     
-    
-    
-    
+    func play(_ position: Int){
+        //TODO: implement
+    }
     
     
     //TODO: method to format timer string
@@ -154,6 +179,17 @@ class MusicController: UIViewController, ItemClicked {
     
     
     
+    @IBAction func seekbarChanged(_ sender: UISlider) {
+        
+        
+        songPercent = Int(slider.value)
+        
+        print("songPercent = \(songPercent)")
+        
+        
+        //TODO: translate this to go to songPercent in the player. mediaPlayer?.seekTo(songPercent * 1000)
+        
+    }
     
     
     
