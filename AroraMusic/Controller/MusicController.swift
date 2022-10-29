@@ -6,7 +6,8 @@
 //
 
 import UIKit
-
+import AVFoundation
+import MediaPlayer
 
 
 class MusicController: UIViewController, ItemClicked {
@@ -15,8 +16,20 @@ class MusicController: UIViewController, ItemClicked {
 
         stop()
         
+        currentPosition = position
         
-        
+        if(isShuffling){
+            
+            isShuffling = false
+            play(currentPosition)
+            isShuffling = true
+            
+        }
+        else {
+            
+            play(currentPosition)
+            
+        }
         
     }
     
@@ -52,7 +65,11 @@ class MusicController: UIViewController, ItemClicked {
     var isShuffling : Bool = false
     
     //TODO: initialize a mediaplayer class or whatever the alternative is in ios
-//    var mediaPlayer
+
+    var mediaPlayer = AVAudioPlayer()
+    
+    
+   
     
     var randomPosition : Int = 0
     var songPercent : Int = 0
@@ -63,6 +80,9 @@ class MusicController: UIViewController, ItemClicked {
         
         
         music.delegate = self
+        
+        
+        
         
         //TODO: ads?
         
@@ -138,7 +158,7 @@ class MusicController: UIViewController, ItemClicked {
     func timerFormat(time: Int) -> String{
         
         //TODO:format to time 00:00 format
-        let result : String = ""
+        let _ : String = ""
         
         var convert = ""
         
@@ -155,8 +175,28 @@ class MusicController: UIViewController, ItemClicked {
     func getSongs(){
         
         //get the music using a cursor to add it to an array of Music Objects
+        //TODO: fix this... could be that the mp3s i added are not "songs".  or could be it is finding nothing for some reason
+        if let mediaItems = MPMediaQuery.songs().items{
+            
+            
+            //TODO: fix error " Failed to fetch local store account with error: Error Domain=com.apple.accounts Code=9 " . Obtained on my ipad
+            
+            var mediaCollection = MPMediaItemCollection(items: mediaItems)
+            
+            var size = mediaCollection.items.capacity //277 for my ipad currently
+            
+            //TODO: use this list to make my Music objects and add them to the musicList
+            
+            print("mediaItems \(mediaItems)")
+            print("mediaCollection size  \(size)")
+            
+        }
+        
+    
+        
         
         //sort the array
+        
         
         //set the array to the tableview
         
@@ -171,7 +211,9 @@ class MusicController: UIViewController, ItemClicked {
     //TODO: do whatever we need to do to get permissions to view/access user music files (external files access in android project)
     func checkPermissions(){
         
-        //TODO:
+        //TODO:get permission
+        
+        getSongs()
         
     }
     
