@@ -18,6 +18,28 @@ class MusicController: UIViewController, ItemClicked {
         
     }
     
+    @IBOutlet weak var slider: UISlider!
+    
+    @IBOutlet weak var timeElapsedLabel: UILabel!
+    
+    @IBOutlet weak var timeRemainingLabel: UILabel!
+    
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    @IBOutlet weak var backButton: UIButton!
+    
+    @IBOutlet weak var playButton: UIButton!
+    
+    @IBOutlet weak var nextButton: UIButton!
+    
+    @IBOutlet weak var randomButton: UIButton!
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    
+    
+    
+    
     
     var music = Music()
     
@@ -57,9 +79,25 @@ class MusicController: UIViewController, ItemClicked {
     
     
     
+    @IBAction func backButtonPressed(_ sender: UIButton) {
+        //TODO: implement
+    }
     
     
     
+    @IBAction func playButtonPressed(_ sender: UIButton) {
+        //TODO: implement
+    }
+    
+    
+    @IBAction func nextButtonPressed(_ sender: UIButton) {
+        //TODO: implement
+    }
+    
+    
+    @IBAction func randomButtonPressed(_ sender: UIButton) {
+        //TODO: implement
+    }
     
     
     
@@ -113,6 +151,12 @@ class MusicController: UIViewController, ItemClicked {
     }
     
     //TODO: seekbar change listener... set it up so the user can move thr seekbar to a position and update the song to start playing at that location
+    
+    
+    
+    
+    
+    
     
     //TODO: onstop and onpause should call pause method. ondestroy should end the mediaplayer.
     
