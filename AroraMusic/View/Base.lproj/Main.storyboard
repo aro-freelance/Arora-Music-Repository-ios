@@ -91,7 +91,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <slider opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="lmn-3j-X3J">
+                                            <slider opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1000" translatesAutoresizingMaskIntoConstraints="NO" id="lmn-3j-X3J">
                                                 <rect key="frame" x="51.333333333333343" y="0.0" width="263.33333333333326" height="31"/>
                                                 <color key="minimumTrackTintColor" red="0.092725239690000003" green="0.24681532380000001" blue="0.46276688580000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <color key="maximumTrackTintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
