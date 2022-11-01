@@ -46,10 +46,6 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="PpR-5r-otI"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="1Xa-Dy-I5Y"/>
-                                </connections>
                             </tableView>
                             <stackView opaque="NO" contentMode="center" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="4wG-EN-RCF">
                                 <rect key="frame" x="12" y="649.33333333333337" width="366" height="156.66666666666663"/>
@@ -143,6 +139,7 @@
                         <outlet property="nextButton" destination="O0D-99-mcA" id="75A-Ti-NsH"/>
                         <outlet property="randomButton" destination="HE9-bh-4RD" id="VdK-Sd-UWo"/>
                         <outlet property="slider" destination="lmn-3j-X3J" id="5mW-lv-SWF"/>
+                        <outlet property="tableView" destination="8B2-4G-q1o" id="TeJ-wY-UIE"/>
                         <outlet property="timeElapsedLabel" destination="4rM-Zy-l4H" id="W5J-bm-VOf"/>
                         <outlet property="timeRemainingLabel" destination="3Mo-sn-5mX" id="jjG-8a-tEj"/>
                         <outlet property="titleLabel" destination="hrY-tC-guu" id="SXB-RP-s3e"/>
