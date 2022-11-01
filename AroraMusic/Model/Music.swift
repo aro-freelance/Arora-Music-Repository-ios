@@ -25,8 +25,6 @@ struct Music {
     var songUrl : URL?
     
     
-    var delegate : ItemClicked?
-    
     
     
     

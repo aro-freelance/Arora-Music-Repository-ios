@@ -10,28 +10,7 @@ import AVFoundation
 import MediaPlayer
 
 
-class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITableViewDataSource {
-    
-    func itemClicked(position: Int) {
-
-        stop()
-        
-        currentPosition = position
-        
-        if(isShuffling){
-            
-            isShuffling = false
-            play(currentPosition)
-            isShuffling = true
-            
-        }
-        else {
-            
-            play(currentPosition)
-            
-        }
-        
-    }
+class MusicController: UITableViewController {
     
     @IBOutlet weak var slider: UISlider!
     
@@ -49,7 +28,6 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
     
     @IBOutlet weak var randomButton: UIButton!
     
-    @IBOutlet weak var tableView: UITableView!
     
     
     
@@ -69,17 +47,18 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
    
     
     var randomPosition : Int = 0
-    var songPercent : Int = 0
+    var songPercent : Float = 0.00
+    var timer: Timer?
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        music.delegate = self
-        
         tableView.delegate = self
         tableView.dataSource = self
+        
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "MusicCell")
         
         
         //TODO: ads?
@@ -100,7 +79,7 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
     
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
-        next()
+        previous()
     }
     
     
@@ -111,7 +90,7 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
     
     
     @IBAction func nextButtonPressed(_ sender: UIButton) {
-        previous()
+        next()
     }
     
     
@@ -129,7 +108,8 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
             randomPosition = 0 //TODO: get a random number from 0 to musicList.size
             play(randomPosition)
         }
-        else if (currentPosition < musicList.capacity - 1){
+        else if (currentPosition < musicList.endIndex){
+            print("next block: current pos = \(currentPosition)")
             stop()
             currentPosition += 1
             play(currentPosition)
@@ -148,6 +128,7 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
             play(randomPosition)
         }
         else if (currentPosition > 0){
+            print("previous block: current pos = \(currentPosition)")
             stop()
             currentPosition -= 1
             play(currentPosition)
@@ -162,6 +143,7 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
         
         if(mediaPlayer != nil){
             mediaPlayer.stop()
+            timer?.invalidate()
             isPlaying = false
             songPercent = 0
             
@@ -176,6 +158,7 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
     func pause(){
         if(mediaPlayer != nil){
             mediaPlayer.pause()
+            timer?.invalidate()
             isPlaying = false
             
             //TODO: set play button to play arrow
@@ -187,11 +170,11 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
         
         if(!isShuffling){
             //TODO: set random button to shuffle on icon
-            randomButton.setTitle("Turn off Shuffle", for: .normal)
+            //randomButton.setTitle("Turn off Shuffle", for: .normal)
             isShuffling = true
         } else {
             //TODO: set random button to shuffle off icon
-            randomButton.setTitle("Turn on Shuffle", for: .normal)
+            //randomButton.setTitle("Turn on Shuffle", for: .normal)
             isShuffling = false
         }
         
@@ -207,12 +190,27 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
     
     func play(_ position: Int){
         
+        //TODO: setup on click for the tableview to pass the pos to this method
+        
         var pos = position
         
         print("play position: \(pos)")
         
+        if(pos >= musicList.endIndex){
+            //TODO: give user feedback that this is out of scope
+            print("index too high")
+            return
+        }
+        if(pos <= musicList.startIndex){
+            //TODO: give user feedback that this is out of scope
+            print("index too low")
+            return
+        }
+        
         //if not currently playing
         if(!isPlaying && songPercent == 0){
+            
+            timerStart()
             
             //TODO: set play button to pause icon
             //TODO: this gave a nil error for the button saying the button was optional at the time it was called
@@ -226,16 +224,14 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
                 
             }
             
-            print("musicList size: \(musicList.capacity)")
+            print("musicList size: \(musicList.count)")
 
-            let url = musicList[pos].songUrl
-            
-            print("url \(url)")
-            
-            if(url != nil){
+            if let url = musicList[pos].songUrl {
+                print("url \(url)")
+                
                 do {
                     //TODO: convert string to url
-                    mediaPlayer = try AVAudioPlayer(contentsOf: url! as! URL)
+                    mediaPlayer = try AVAudioPlayer(contentsOf: url )
                     mediaPlayer.play()
                     titleLabel.text = musicList[pos].songName
                     print("play do block")
@@ -247,6 +243,7 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
                 print("url is nil")
             }
             
+            
             //TODO: autoplay next song
             
             
@@ -254,7 +251,7 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
         
         //TODO: continue playing where it was paused
         else if (!isPlaying && songPercent > 0){
-            
+            timerStart()
             
             
         }
@@ -296,6 +293,7 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
                 
                 if let url = item.value(forProperty: MPMediaItemPropertyAssetURL) as? URL {
                     
+                    //TODO: test this to fix it blocking all the itunes stuff.. only the manual adds make it to the list now...
                     
                     if(url != nil){
                         
@@ -343,13 +341,30 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
     
     @IBAction func seekbarChanged(_ sender: UISlider) {
         
+        pause()
         
-        songPercent = Int(slider.value)
+        songPercent = Float(sender.value / 1000)
         
-        print("songPercent = \(songPercent)")
+        var time = mediaPlayer.duration * (Double(songPercent))
+        
+        mediaPlayer.currentTime = time
+        mediaPlayer.play()
+        timerStart()
         
         
-        //TODO: translate this to go to songPercent in the player. mediaPlayer?.seekTo(songPercent * 1000)
+    }
+    
+    //call slider match to song method each 0.0001
+    func timerStart(){
+        //TODO: fix this function so that it doesn't conflict with the play/pause and seek functionality
+        
+//        timer = Timer.scheduledTimer(timeInterval: 0.0001, target: self, selector: #selector(self.sliderMatchProgress), userInfo: nil, repeats: true)
+    }
+    
+    //match the slider to the song progress
+    @objc func sliderMatchProgress(){
+        
+        slider.value = Float(mediaPlayer.currentTime)
         
     }
     
@@ -362,12 +377,12 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
     //TODO: implement the adapter in this file. In the original android project it is in the MusicListAdapter file.
     //MARK: - TableView Datasource Methods
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return musicList.count
     }
 
     //set the array to the tableview
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "MusicCell", for: indexPath)
@@ -379,6 +394,32 @@ class MusicController: UIViewController, ItemClicked, UITableViewDelegate, UITab
         
         
         return cell
+    }
+    
+    //MARK: - TableView Delegate Methods
+    //do something when a row is clicked
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        stop()
+        
+        currentPosition = indexPath.row
+        
+        if(isShuffling){
+            
+            isShuffling = false
+            play(currentPosition)
+            isShuffling = true
+            
+        }
+        else {
+            
+            play(currentPosition)
+            
+        }
+        
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
     
 

@@ -29,7 +29,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MusicController" customModule="AroraMusic" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="UITableView">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -44,8 +44,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" identifier="MusicCell"/>
                                     </tableViewCell>
                                 </prototypes>
+                                <sections/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="fIt-sd-75v"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="5aA-gF-5w8"/>
+                                </connections>
                             </tableView>
                             <stackView opaque="NO" contentMode="center" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="4wG-EN-RCF">
                                 <rect key="frame" x="12" y="649.33333333333337" width="366" height="156.66666666666663"/>
@@ -132,6 +138,10 @@
                             <constraint firstItem="8B2-4G-q1o" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ur1-V7-B8r"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4wG-EN-RCF" secondAttribute="trailing" constant="12" id="xHX-pv-tyQ"/>
                         </constraints>
+                        <connections>
+                            <outlet property="dataSource" destination="BYZ-38-t0r" id="jdH-kK-mjV"/>
+                            <outlet property="delegate" destination="BYZ-38-t0r" id="tmZ-1D-EH8"/>
+                        </connections>
                     </view>
                     <navigationItem key="navigationItem" id="oQs-Hy-eZa"/>
                     <connections>
@@ -139,7 +149,6 @@
                         <outlet property="nextButton" destination="O0D-99-mcA" id="75A-Ti-NsH"/>
                         <outlet property="randomButton" destination="HE9-bh-4RD" id="VdK-Sd-UWo"/>
                         <outlet property="slider" destination="lmn-3j-X3J" id="5mW-lv-SWF"/>
-                        <outlet property="tableView" destination="8B2-4G-q1o" id="TeJ-wY-UIE"/>
                         <outlet property="timeElapsedLabel" destination="4rM-Zy-l4H" id="W5J-bm-VOf"/>
                         <outlet property="timeRemainingLabel" destination="3Mo-sn-5mX" id="jjG-8a-tEj"/>
                         <outlet property="titleLabel" destination="hrY-tC-guu" id="SXB-RP-s3e"/>
