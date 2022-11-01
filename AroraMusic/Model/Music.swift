@@ -22,7 +22,7 @@ struct Music {
     
     var songName : String?
     
-    var songUri : String?
+    var songUri : URL?
     
     
     var delegate : ItemClicked?

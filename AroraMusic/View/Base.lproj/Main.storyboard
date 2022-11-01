@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JZ2-zj-DMP">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -35,6 +36,20 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="8B2-4G-q1o">
                                 <rect key="frame" x="0.0" y="0.0" width="390" height="645.33333333333337"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MusicCell" id="fCD-ng-Mec">
+                                        <rect key="frame" x="0.0" y="50" width="390" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fCD-ng-Mec" id="NUZ-e2-A8Q">
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="PpR-5r-otI"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="1Xa-Dy-I5Y"/>
+                                </connections>
                             </tableView>
                             <stackView opaque="NO" contentMode="center" axis="vertical" spacing="36" translatesAutoresizingMaskIntoConstraints="NO" id="4wG-EN-RCF">
                                 <rect key="frame" x="12" y="649.33333333333337" width="366" height="156.66666666666663"/>
@@ -128,7 +143,6 @@
                         <outlet property="nextButton" destination="O0D-99-mcA" id="75A-Ti-NsH"/>
                         <outlet property="randomButton" destination="HE9-bh-4RD" id="VdK-Sd-UWo"/>
                         <outlet property="slider" destination="lmn-3j-X3J" id="5mW-lv-SWF"/>
-                        <outlet property="tableView" destination="8B2-4G-q1o" id="6hu-oS-13u"/>
                         <outlet property="timeElapsedLabel" destination="4rM-Zy-l4H" id="W5J-bm-VOf"/>
                         <outlet property="timeRemainingLabel" destination="3Mo-sn-5mX" id="jjG-8a-tEj"/>
                         <outlet property="titleLabel" destination="hrY-tC-guu" id="SXB-RP-s3e"/>

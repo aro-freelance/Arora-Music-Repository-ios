@@ -49,7 +49,6 @@ class MusicController: UIViewController, ItemClicked {
     
     @IBOutlet weak var randomButton: UIButton!
     
-    @IBOutlet weak var tableView: UITableView!
     
     
     
@@ -174,31 +173,29 @@ class MusicController: UIViewController, ItemClicked {
     //TODO: get the music from the user device
     func getSongs(){
         
-        //get the music using a cursor to add it to an array of Music Objects
-        //TODO: fix this... could be that the mp3s i added are not "songs".  or could be it is finding nothing for some reason
+        //get the music to add it to an array of Music Objects
         if let mediaItems = MPMediaQuery.songs().items{
             
+            let mediaCollection = MPMediaItemCollection(items: mediaItems)
             
-            //TODO: fix error " Failed to fetch local store account with error: Error Domain=com.apple.accounts Code=9 " . Obtained on my ipad
+            //use this list to make my Music objects and add them to the musicList
+            for item in mediaCollection.items {
+                
+                let music = Music(artistName: item.artist, songName: item.title, songUri: item.assetURL)
+                
+                musicList.append(music)
+                
+                print("song name : \(music.songName ?? "nil")")
+                
+            }
             
-            var mediaCollection = MPMediaItemCollection(items: mediaItems)
-            
-            var size = mediaCollection.items.capacity //277 for my ipad currently
-            
-            //TODO: use this list to make my Music objects and add them to the musicList
-            
-            print("mediaItems \(mediaItems)")
-            print("mediaCollection size  \(size)")
             
         }
         
-    
-        
-        
-        //sort the array
-        
+        //TODO: sort the array
         
         //set the array to the tableview
+        
         
         //if list is empty give user feedback to let them know
         
@@ -240,7 +237,23 @@ class MusicController: UIViewController, ItemClicked {
     
     
     //TODO: implement the adapter in this file. In the original android project it is in the MusicListAdapter file.
+    //MARK: - TableView Datasource Methods
     
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return musicList.count
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MusicCell", for: indexPath)
+        
+        cell.textLabel?.text = musicList[indexPath.row].artistName ?? "No Artist"
+        cell.textLabel?.text = musicList[indexPath.row].songName ?? "No Title"
+        
+        
+        return cell
+    }
     
 
 
