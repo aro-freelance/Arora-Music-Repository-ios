@@ -39,12 +39,7 @@ class MusicController: UITableViewController {
     var isPlaying : Bool = false
     var isShuffling : Bool = false
     
-    //TODO: initialize a mediaplayer class or whatever the alternative is in ios
-
     var mediaPlayer = AVAudioPlayer()
-    
-    
-   
     
     var randomPosition : Int = 0
     var songPercent : Float = 0.00
@@ -63,7 +58,7 @@ class MusicController: UITableViewController {
         
         //TODO: ads?
         
-        //TODO: keep the screen awake (so that it doesn't stop playing midsong while idle)
+        //TODO: keep the screen awake (so that it doesn't stop playing midsong while idle)?
         
         getSongs()
         
@@ -72,10 +67,6 @@ class MusicController: UITableViewController {
         
         
     }
-    
-    //TODO: button methods for play, next, previous and shuffleplay buttons
-    
-    
     
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
@@ -105,7 +96,7 @@ class MusicController: UITableViewController {
         
         if(isShuffling){
             stop()
-            randomPosition = 0 //TODO: get a random number from 0 to musicList.size
+            randomPosition = Int.random(in: 0..<musicList.count)
             play(randomPosition)
         }
         else if (currentPosition < musicList.endIndex){
@@ -124,7 +115,7 @@ class MusicController: UITableViewController {
         
         if(isShuffling){
             stop()
-            randomPosition = 0 //TODO: get a random number from 0 to musicList.size
+            randomPosition = Int.random(in: 0..<musicList.count)
             play(randomPosition)
         }
         else if (currentPosition > 0){
@@ -184,6 +175,11 @@ class MusicController: UITableViewController {
             stop()
             play(currentPosition)
         }
+        //turned this off so the button is just a shuffle toggle
+//        else {
+//            print("shuffle button pause.")
+//            pause()
+//        }
         
     }
     
@@ -194,18 +190,6 @@ class MusicController: UITableViewController {
         
         var pos = position
         
-        print("play position: \(pos)")
-        
-        if(pos >= musicList.endIndex){
-            //TODO: give user feedback that this is out of scope
-            print("index too high")
-            return
-        }
-        if(pos <= musicList.startIndex){
-            //TODO: give user feedback that this is out of scope
-            print("index too low")
-            return
-        }
         
         //if not currently playing
         if(!isPlaying && songPercent == 0){
@@ -216,12 +200,24 @@ class MusicController: UITableViewController {
             //TODO: this gave a nil error for the button saying the button was optional at the time it was called
             //playButton.setTitle("Pause", for: .normal)
             isPlaying = true
-            
             if(isShuffling){
                 
-                randomPosition = 0 //TODO: get a random number from 0 to musicList.size
+                randomPosition = Int.random(in: 0..<musicList.count)
                 pos = randomPosition
                 
+            }
+            
+            print("play position: \(pos)")
+            
+            if(pos >= musicList.endIndex){
+                //TODO: give user feedback that this is out of scope
+                print("index too high")
+                return
+            }
+            if(pos < musicList.startIndex){
+                //TODO: give user feedback that this is out of scope
+                print("index too low")
+                return
             }
             
             print("musicList size: \(musicList.count)")
@@ -251,12 +247,14 @@ class MusicController: UITableViewController {
         
         //TODO: continue playing where it was paused
         else if (!isPlaying && songPercent > 0){
+            print("is not playing and song percent is >0. cont from paused pos.")
             timerStart()
             
             
         }
         //pause currently playing song
         else {
+            print("pause the song")
             pause()
         }
         
@@ -369,12 +367,15 @@ class MusicController: UITableViewController {
     }
     
     
+    override func viewWillDisappear(_ animated: Bool) {
+        pause()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        stop()
+    }
     
     
-    //TODO: onstop and onpause should call pause method. ondestroy should end the mediaplayer.
-    
-    
-    //TODO: implement the adapter in this file. In the original android project it is in the MusicListAdapter file.
     //MARK: - TableView Datasource Methods
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
